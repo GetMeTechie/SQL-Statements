@@ -1,0 +1,32 @@
+-- A subquery can be nested inside the WHERE or HAVING clause of an outer SELECT, INSERT, UPDATE, or DELETE statement, or inside another subquery.
+
+-- Returns the details of only those customers whose order value in the orders table is more than 5000 dollar. 
+Also note that we've used the keyword DISTINCT in our subquery to eliminate the duplicate cust_id values from the result set.
+
+SELECT * FROM customers
+WHERE cust_id IN (SELECT DISTINCT cust_id FROM orders 
+                      WHERE order_value > 5000);
+                      
+-- Inserts the records of premium customers into a table called premium_customers, by using the data returned from subquery.
+
+INSERT INTO premium_customers 
+SELECT * FROM customers 
+WHERE cust_id IN (SELECT DISTINCT cust_id FROM orders 
+                      WHERE order_value > 5000);
+
+-- Updates the order value in the orders table for those customers who live in the area whose postal code is 75016, by increasing the current order value by 10 dollar.
+
+UPDATE orders
+SET order_value = order_value + 10
+WHERE cust_id IN (SELECT cust_id FROM customers 
+                      WHERE postal_code = 75016);
+
+-- Deletes those orders from the orders table that contains the product whose product_id is 5.
+delete those orders from the orders table that contains the product whose product_id is 5.
+
+DELETE FROM orders
+WHERE order_id IN (SELECT order_id FROM order_details 
+                   WHERE product_id = 5);
+
+
+--
